@@ -1,0 +1,22 @@
+---
+- name: Install repo packages
+  apt: name="{{ item }}" state=installed
+  with_items:
+    - createrepo
+    - rsync
+
+- name: Copy Mirror Crontab
+  template:
+    src: mirrorcron.j2
+    dest: /etc/cron.d/mirrorcron
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy Mirror Sync Script
+  template:
+    src: cron.sh.j2
+    dest: /root/cron.sh
+    owner: root
+    group: root
+    mode: 0700

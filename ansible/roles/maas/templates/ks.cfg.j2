@@ -1,0 +1,59 @@
+#version=DEVEL
+# System authorization information
+auth --enableshadow --passalgo=sha512
+# Use CDROM installation media
+url --url {{ repourl }}
+# Use graphical install
+#graphical
+text
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use={{ item.mbr }}
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+network  --bootproto=dhcp --device={{ item.mgmtif }} --noipv6 --activate
+network  --hostname={{ item.name }}
+
+# Root password
+rootpw --iscrypted {{ rootpasshash }}
+# System timezone
+timezone America/New_York --isUtc
+user --groups=wheel --name={{ firstuser }} --password={{ firstuserpasshash }} --iscrypted --gecos="{{ firstuser }}"
+# System bootloader configuration
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive={{ item.mbr }}
+autopart --type=lvm
+# Partition clearing information
+clearpart --all --initlabel --drives=sda,sdb
+# Reboot after install finishes
+reboot
+
+%packages
+@^minimal
+@core
+kexec-tools
+{% for pkg in defaultpackages %}
+{{ pkg }}
+{% endfor %}
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb='auto'
+
+%end
+
+%post --log=/root/postinstall.log
+# SSH UseDNS no
+sed -ri 's/#UseDNS yes/UseDNS no/'g /etc/ssh/sshd_config
+# SSH Key
+mkdir -p /home/{{ firstuser }}/.ssh
+chmod 700 /home/{{ firstuser }}/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCugz/eu/a6U5ZXtYVp9ufCghVSP0Lux/nP6BgbranKE6r3h3xgqo8yR2LUG9VwH6Vo+BtGgToeww+jbgr3oq9g8/mQmNvQEefvWyzhYxrpv6q36fdYS0KhQxA6vnpOZZ1M9cZ1q6iPaUryxDUFU3HULDKM4g/6XBzqBJZ2illyuw==" > /home/{{ firstuser }}/.ssh/authorized_keys
+chmod 600 /home/{{ firstuser }}/.ssh/authorized_keys
+chown -R {{ firstuser }}:{{ firstuser }} /home/{{ firstuser }}/.ssh
+
+yum -y update
+ 
+%end

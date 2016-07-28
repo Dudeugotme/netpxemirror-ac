@@ -1,0 +1,19 @@
+insmod efi_gop
+insmod efi_uga
+insmod video_bochs
+insmod video_cirrus
+insmod all_video
+set gfxpayload=keep
+insmod gzio
+insmod part_gpt
+insmod ext2
+
+insmod net
+insmod efinet
+insmod tftp
+
+net_bootp efinet0
+
+set net_default_server={{ tftpnextserver }}
+
+configfile (tftp)/boot/grub/x86_64-efi/grub.cfg-01-$net_efinet0_mac

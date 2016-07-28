@@ -1,0 +1,61 @@
+---
+# vars file for maas
+nodes:
+  - { name: "mp", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.50", mgmtmac: "00:23:32:2f:40:3c", mgmtif: "enp7s0f0", cores: "8", ram: "24", disk: "240", mbr: "sda" }
+  - { name: "mm1", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.51", mgmtif: "enp1s0f0", mgmtmac: "a8:20:66:34:ff:e9", cores: "4", ram: "16", disk: "250", mbr: "sdb" }
+  - { name: "mm2", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.52", mgmtif: "enp1s0f0", mgmtmac: "a8:20:66:4a:ce:46", cores: "4", ram: "16", disk: "250", mbr: "sda" }
+  - { name: "mm3", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.53", mgmtif: "enp1s0f0", mgmtmac: "a8:20:66:4a:d9:da", cores: "4", ram: "16", disk: "250", mbr: "sda" }
+  - { name: "smpc", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.54", mgmtif: "enp6s0", mgmtmac: "00:30:48:fb:e2:44", cores: "4", ram: "12", disk: "240", mbr: "sda" }
+  - { name: "sm1", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.55", mgmtif: "enp11s0", mgmtmac: "00:25:90:96:c4:9a", cores: "16", ram: "96", disk: "512", mbr: "sda" }
+  - { name: "sm2", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.56", mgmtif: "enp11s0", mgmtmac: "00:25:90:96:c6:5a", cores: "16", ram: "96", disk: "512", mbr: "sda" }
+  - { name: "d1", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.57", mgmtif: "em1", mgmtmac: "bc:30:5b:e5:73:b7", cores: "4", ram: "32", disk: "240", mbr: "sda" }
+  - { name: "d2", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.58", mgmtif: "em1", mgmtmac: "bc:30:5b:e5:75:28", cores: "4", ram: "32", disk: "240", mbr: "sda" }
+
+containerpackages:
+  - ca-certificates
+  - wget
+  - net-tools
+
+dhcpleasetime: 3600
+dhcpmaxleasetime: 7200
+dhcpsubnet: "172.22.10.0"
+dhcpnetmask: "255.255.255.0"
+dhcprangestart: "172.22.10.5"
+dhcprangeend: "172.22.10.30"
+bootprangestart: "172.22.10.31"
+bootprangeend: "172.22.10.49"
+dhcpnameserver: "172.22.10.1"
+dhcpdomain: "lonimbus.com"
+dhcprouter: "172.22.10.1"
+dhcpbroadcast: "172.22.10.255"
+pcfilename: "boot/grub/i386-pc/core.0" # no leading slash
+macefi: "mactel64.efi" # no leading slash
+tftpnextserver: "172.22.10.2"
+
+tftproot: "/nbi"
+
+webroot: "/var/www/html"
+repobase: "http://deploy"
+repourl: "http://deploy/repos/centos/7/os/x86_64"
+repoos: "repos/centos/7/os/x86_64"
+repoupdates: "repos/centos/7/updates/x86_64"
+repoepel: "repos/epel/7/x86_64"
+rsync1: "rsync://mirror.cisp.com/CentOS/7/os/x86_64/"
+rsync2: "rsync://mirror.cisp.com/CentOS/7/updates/x86_64/"
+rsync3: "rsync://mirrors.rit.edu/epel/7/x86_64/"
+synctab: '11 1 * * *'
+isolinuxmirror: "http://centos.aol.com/7/os/x86_64/isolinux"
+
+kscfg: "ks.cfg"
+ksphpscriptname: "ks.php"
+rootpasshash: '$6$SANKK2GLJES9hSp9$PgaXUwpz2S4mRwg6kUQo.E3IyArxeA.MdIc77e1kkPRDD3BI8d3mxrwmoD.8BbZ2613XJoZNgWX0fwCsu1tih.'
+firstuser: "admin"
+firstuserpasshash: '$6$0YFXS7zQLIQ99FCh$gqxId0ypSP16GCwiOfOcGUZK9AASxatDVF4g8PtTy5HDaZ5jXeIo9NeOU4ttK1KWjsI/6D6TVMfOh37XCMSG2/'
+defaultpackages:
+  - net-tools
+  - tcpdump
+  - wget
+  - nc
+
+cronlog: "/var/log/cron.log"
+cronmirrorscript: "/root/cron.sh"

@@ -1,0 +1,52 @@
+#!/bin/bash
+set -euo pipefail
+
+# Kickstart
+if [ ! -d {{ webroot }}/cfg ]; then
+  mkdir -p {{ webroot }}/cfg
+  #cp -R /root/cfg/* {{ webroot }}/cfg/
+fi
+
+if [ ! -f {{ webroot }}/{{ ksphpscriptname }} ]; then
+  cp /root/{{ ksphpscriptname }} {{ webroot }}/{{ ksphpscriptname }}
+  chmod 644 {{ webroot }}/{{ ksphpscriptname }}
+fi
+
+# TFTP
+mkdir -p {{ tftproot }}
+
+if [ ! -f {{ tftproot }}/grub.cfg-net ]; then
+  cp /root/grub.cfg-net {{ tftproot }}/grub.cfg-net
+  chmod 644 {{ tftproot }}/grub.cfg-net
+fi
+
+# Generate mactel boot efi
+if [ ! -f {{ tftproot }}/{{ macefi }} ]; then
+  grub-mkimage -d /usr/lib/grub/x86_64-efi/ -O x86_64-efi -o {{ tftproot }}/{{ macefi }} -p '(tftp)/boot/grub' -c {{ tftproot }}/grub.cfg-net normal configfile net efinet tftp efi_gop efi_uga all_video gzio part_gpt ext2 echo linuxefi
+fi
+if [ ! -d {{ tftproot }}/boot/grub ]; then
+  grub-mknetdir --net-directory={{ tftproot }}
+fi
+
+# Grub boot files
+cp /root/grub.cfg-i386-pc {{ tftproot }}/boot/grub/i386-pc/grub.cfg
+cp /root/grub.cfg-i386-pc {{ tftproot }}/boot/grub/grub.cfg
+cp /root/grub.cfg-x86_64-efi {{ tftproot }}/boot/grub/x86_64-efi/grub.cfg
+
+# Netinstall kernel and initrd for anaconda installation
+if [ ! -f {{ tftproot }}/initrd.img ]; then
+  wget --quiet -O {{ tftproot }}/initrd.img {{ isolinuxmirror }}/initrd.img
+fi
+if [ ! -f {{ tftproot }}/vmlinuz ]; then
+  wget --quiet -O {{ tftproot }}/vmlinuz {{ isolinuxmirror }}/vmlinuz
+fi
+
+# Local yum repo mirror
+if [ ! -d {{ webroot }}/{{ repoos }}/repodata ]; then
+  if [ -d {{ webroot }} ]; then
+    mkdir -p {{ webroot }}/{{ repoos }}
+    mkdir -p {{ webroot }}/{{ repoupdates }}
+    mkdir -p {{ webroot }}/{{ repoepel }}
+    {{ cronmirrorscript }} &
+  fi
+fi

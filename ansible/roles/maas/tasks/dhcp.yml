@@ -1,0 +1,26 @@
+---
+- name: Install repo packages
+  apt: name="{{ item }}" state=installed
+  with_items:
+    - isc-dhcp-server
+    - grub-common
+    - grub2-common
+    - grub-imageboot
+    - grub-pc-bin
+    - grub-efi
+
+- name: Configure DHCPD
+  template:
+    src: dhcpd.conf.j2
+    dest: /etc/dhcp/dhcpd.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable DHCP server
+  copy:
+    src: dhcpd-init
+    dest: /etc/my_init.d/30_dhcp
+    owner: root
+    group: root
+    mode: 0744

@@ -1,0 +1,18 @@
+set default="0"
+
+set timeout=10
+
+menuentry 'Unattended Centos 7 Install' --class os {
+
+     echo 'Network status: '
+     net_ls_cards
+     net_ls_addr
+     net_ls_routes
+
+     echo 'Loading Linux ...'
+     #linuxefi (tftp)/vmlinuz noipv6 inst.repo=http://deploy/repos/centos/7/os/x86_64/ inst.ks=http://deploy/ks.cfg inst.ks.sendmac
+     linuxefi (tftp)/vmlinuz noipv6 inst.repo={{ repourl }} inst.ks={{ repobase }}/{{ kscfg }} inst.ks.sendmac
+
+     echo 'Loading initial ramdisk ...'
+     initrdefi (tftp)/initrd.img
+}

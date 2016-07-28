@@ -1,0 +1,11 @@
+#!/bin/bash
+
+date >> {{ cronlog }}
+
+echo "Starting Repo Sync..." >> {{ cronlog }}
+/usr/bin/rsync -avz --delete {{ rsync1 }} {{ webroot }}/{{ repoos }}/ >> {{ cronlog }} 2>&1
+/usr/bin/rsync -avz --delete {{ rsync2 }} {{ webroot }}/{{ repoupdates }}/ >> {{ cronlog }} 2>&1
+/usr/bin/rsync -avz --delete --exclude='debug' {{ rsync3 }} {{ webroot }}/{{ repoepel }}/ >> {{ cronlog }} 2>&1
+echo "Finished Repo Sync..." >> {{ cronlog }}
+
+date >> {{ cronlog }}

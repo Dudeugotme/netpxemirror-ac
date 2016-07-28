@@ -1,0 +1,28 @@
+---
+# tasks file for maas
+- name: Update Apt
+  apt: upgrade=yes
+
+- name: Install packages into container
+  apt: name="{{ item }}" state=installed
+  with_items: "{{ containerpackages }}"
+
+- name: Configure Web Mirror
+  include: "tasks/mirror.yml"
+
+- name: Configure Mirror Sync
+  include: "tasks/sync.yml"
+
+- name: Configure TFTP
+  include: "tasks/tftp.yml"
+
+- name: Configure DHCP
+  include: "tasks/dhcp.yml"
+
+- name: Add final script on init
+  template:
+    src: start.sh.j2
+    dest: /etc/my_init.d/99_start
+    owner: root
+    group: root
+    mode: 0744

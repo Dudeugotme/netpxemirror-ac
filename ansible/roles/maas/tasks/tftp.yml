@@ -1,0 +1,46 @@
+---
+- name: Install TFTP
+  apt: name=tftpd-hpa state=installed
+
+- name: Configure TFTPd
+  template:
+    src: tftpd-hpa.j2
+    dest: /etc/default/tftpd-hpa
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable TFTPd at start
+  template:
+    src: tftpd-init.j2
+    dest: /etc/my_init.d/20_tftpd
+    owner: root
+    group: root
+    mode: 0744
+
+- name: Template grub.cfg and ks.php files into place
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: "grub.cfg-net.j2", dst: "/root/grub.cfg-net" }
+    - { src: "grub.cfg-i386-pc.j2", dst: "/root/grub.cfg-i386-pc" }
+    - { src: "grub.cfg-x86_64-efi.j2", dst: "/root/grub.cfg-x86_64-efi" }
+    - { src: "ks.php.j2", dst: "/root/ks.php" }
+
+- name: Make kickstart directory
+  file:
+    path: "/root/cfg"
+    state: directory
+
+- name: Generate kickstarts
+  template:
+    src: ks.cfg.j2
+    dest: "/root/cfg/{{ item.mgmtmac }}.cfg"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ nodes }}"

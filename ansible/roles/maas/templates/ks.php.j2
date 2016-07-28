@@ -1,0 +1,37 @@
+<?php
+  # kickstart needs text/plain or it fails
+  header("Content-Type: text/plain");
+
+  # Cfg file path
+  $cfgpath = "{{ webroot }}/cfg";
+
+  # Did we get the inst.ks.sendmac header
+  if (isset($_SERVER['HTTP_X_RHN_PROVISIONING_MAC_0'])) {
+    # Parse the header
+    $macstring = $_SERVER['HTTP_X_RHN_PROVISIONING_MAC_0'];
+    $macarray = explode(" ", $macstring);
+
+    # Did the header contain a mac address?
+    if (isset($macarray[1])) {
+      $mac = $macarray[1];
+
+      # Valid mac format?
+      #if (preg_match('/([a-fA-F0-9]{2}[:|\-]?){6}/', $mac) == 0) {
+      if (preg_match('/([a-fA-F0-9]{2}:?){6}/', $mac) == 0) {
+        echo "Invalid Request\n";
+        exit;
+      }
+
+      # Send its config if one exists
+      $configfile = "$cfgpath/$mac.cfg";
+      if (file_exists($configfile)) {
+        readfile($configfile);
+      } else {
+        echo "Invalid Request\n";
+      }
+    }
+  } else {
+    echo "Invalid Request\n";
+    exit;
+  }
+?>

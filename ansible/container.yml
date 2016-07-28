@@ -1,0 +1,12 @@
+version: "1"
+services:
+  maas:
+    image: phusion/baseimage:latest
+    command: ['/sbin/my_init']
+    ports:
+      - "80:80"
+      - "67:67/udp"
+      - "69:69/udp"
+    environment:
+      TERM: vt100
+registries: {}

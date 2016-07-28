@@ -1,0 +1,25 @@
+---
+- name: Install Apache2
+  apt: name=apache2 state=latest
+
+- name: Install php7
+  apt: name=libapache2-mod-php7.0 state=latest
+
+- name: Enable mod_rewrite
+  apache2_module: state=present name=rewrite
+
+- name: Configure Apache2
+  template: 
+    src: 000-default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable Apache2 at start
+  copy:
+    src: apache2-init
+    dest: /etc/my_init.d/10_apache2
+    owner: root
+    group: root
+    mode: 0744

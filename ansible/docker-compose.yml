@@ -1,0 +1,14 @@
+version: "2"
+services:
+  maas:
+    image: orc-maas:latest
+    command: ['/sbin/my_init']
+    network_mode: "host"
+    ports:
+      - "80:80"
+      - "67:67/udp"
+      - "69:69/udp"
+    volumes:
+      - /var/www/html:/var/www/html
+    environment:
+      TERM: vt100
