@@ -1,8 +1,9 @@
-## Orc(hestrator)
+## Ansible-Container Deploy System Orchestrator
 
 Builds a single container with dhpcd, tftpd, httpd, and support for netbooting macs and pxebooting pcs to install Centos 7 with Kickstart
 
 To use:
+* Install ansible, docker, ansible-container
 * Modify ansible/roles/maas/vars/main.yml to taste
 * ./orc build (builds the container)
 * ./orc buildclean (if the build container needs created from scratch)
