@@ -1,3 +1,6 @@
 #!/bin/bash
 
-#service isc-dhcp-server start
+if [ -f /var/run/dhcpd.pid ]; then
+  rm /var/run/dhcpd.pid
+fi
+service isc-dhcp-server start
