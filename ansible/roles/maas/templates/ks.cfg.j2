@@ -54,6 +54,9 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCugz/eu/a6U5ZXtYVp9ufCghVSP0Lux/nP6B
 chmod 600 /home/{{ firstuser }}/.ssh/authorized_keys
 chown -R {{ firstuser }}:{{ firstuser }} /home/{{ firstuser }}/.ssh
 
+# Passwordless sudo for admin
+echo "admin   ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/admin
+
 yum -y update
  
 %end
