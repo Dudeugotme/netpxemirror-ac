@@ -1,0 +1,20 @@
+---
+# tasks file for centos-base
+
+- name: Install base packages and pip
+  include: "tasks/packages.yml"
+
+- name: Install Docker
+  include: "tasks/docker.yml"
+
+- name: Install Ntpd
+  include: "tasks/ntpd.yml"
+
+- name: Install Ansible
+  include: "tasks/ansible.yml"
+
+- name: Install Openstack Clients
+  include: "tasks/openstack.yml"
+
+- name: Install Kolla
+  include: "tasks/kolla.yml"

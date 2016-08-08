@@ -1,7 +1,7 @@
 version: "2"
 services:
   maas:
-    image: orc-maas:latest
+    image: netpxemirror-ac-maas:latest
     command: ['/sbin/my_init']
     network_mode: "host"
     ports:

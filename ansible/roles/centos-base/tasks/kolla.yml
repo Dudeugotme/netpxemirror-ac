@@ -1,0 +1,12 @@
+---
+#- git:
+#    repo: https://git.openstack.org/openstack/kolla.git
+#    dest: /home/admin/kolla
+#    version: stable/mitaka
+#  become: no
+
+- git:
+    repo: https://git.openstack.org/openstack/kolla.git
+    dest: /home/admin/kolla
+    version: master
+  become: no

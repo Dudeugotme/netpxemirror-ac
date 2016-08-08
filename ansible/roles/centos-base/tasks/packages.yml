@@ -1,0 +1,21 @@
+---
+- name: Install EPEL for python/pip
+  yum: name="{{ item }}" state=present
+  with_items:
+    - epel-release
+
+- name: Install Packages
+  yum: name="{{ item }}" state=present
+  with_items:
+    - python-pip
+    - git
+    - wget
+    - nc
+    - lsof
+    - vim-enhanced
+    - lvm2
+    - device-mapper
+
+- name: Upgrade pip
+  pip: name=pip version=8.1.2
+

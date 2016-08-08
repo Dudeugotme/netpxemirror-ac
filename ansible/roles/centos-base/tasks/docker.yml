@@ -1,0 +1,44 @@
+---
+- name: Copy docker install script
+  copy:
+    src: installdocker.sh
+    dest: "/root/docker.sh"
+    mode: 0755
+
+- name: Install Docker
+  shell: "/root/docker.sh"
+  args:
+    creates: "/bin/docker"
+
+- name: Create Docker Config Directory
+  file:
+    path: "/etc/systemd/system/docker.service.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Enable Local Registry
+  copy:
+    src: "docker.conf"
+    dest: "/etc/systemd/system/docker.service.d/docker.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Docker
+
+- name: Copy Docker Config for Mount Shared
+  copy:
+    src: "docker-kolla.conf"
+    dest: "/etc/systemd/system/docker.service.d/kolla.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Docker
+
+- name: Install python-docker-py
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - python-docker-py

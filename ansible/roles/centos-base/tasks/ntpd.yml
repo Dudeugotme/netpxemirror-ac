@@ -1,0 +1,6 @@
+---
+- name: Install python-docker-py
+  yum:
+    name: ntp
+    state: installed
+  notify: Enable NTP

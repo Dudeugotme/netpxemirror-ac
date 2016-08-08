@@ -1,0 +1,16 @@
+---
+- name: Install dependencies for Ansible
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - gcc
+    - python-devel
+    - libffi-devel
+    - openssl-devel
+
+- name: Install Python Cryptography
+  pip: name=cryptography
+
+- name: Install Ansible
+  pip: name=ansible

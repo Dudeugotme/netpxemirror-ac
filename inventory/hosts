@@ -1,0 +1,14 @@
+[nodes]
+172.22.10.50 mgmtip=172.22.10.50 mgmtif=enp7s0f0 extif=enp7s0f1 ansible_user=admin
+
+
+#  - { name: "mp", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.50", mgmtmac: "00:23:32:2f:40:3c", mgmtif: "enp7s0f0", cores: "8", ram: "24", disk: "240", mbr: "sda" }
+#  - { name: "mm1", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.51", mgmtif: "enp1s0f0", mgmtmac: "a8:20:66:34:ff:e9", cores: "4", ram: "16", disk: "250", mbr: "sdb" }
+#  - { name: "mm2", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.52", mgmtif: "enp1s0f0", mgmtmac: "a8:20:66:4a:ce:46", cores: "4", ram: "16", disk: "250", mbr: "sda" }
+#  - { name: "mm3", platform: "mac", arch: "x86_64", mgmtip: "172.22.10.53", mgmtif: "enp1s0f0", mgmtmac: "a8:20:66:4a:d9:da", cores: "4", ram: "16", disk: "250", mbr: "sda" }
+#  - { name: "smpc", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.54", mgmtif: "enp6s0", mgmtmac: "00:30:48:fb:e2:44", cores: "4", ram: "12", disk: "240", mbr: "sda" }
+#  - { name: "sm1", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.55", mgmtif: "enp11s0", mgmtmac: "00:25:90:96:c4:9a", cores: "16", ram: "96", disk: "512", mbr: "sda" }
+#  - { name: "sm2", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.56", mgmtif: "enp11s0", mgmtmac: "00:25:90:96:c6:5a", cores: "16", ram: "96", disk: "512", mbr: "sda" }
+#  - { name: "d1", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.57", mgmtif: "em1", mgmtmac: "bc:30:5b:e5:73:b7", cores: "4", ram: "32", disk: "240", mbr: "sda" }
+#  - { name: "d2", platform: "pc", arch: "x86_64", mgmtip: "172.22.10.58", mgmtif: "em1", mgmtmac: "bc:30:5b:e5:75:28", cores: "4", ram: "32", disk: "240", mbr: "sda" }
+

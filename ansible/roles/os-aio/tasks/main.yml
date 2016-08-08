@@ -1,0 +1,54 @@
+---
+# tasks file for os-aio
+
+- name: Install Kolla pip
+  shell: cd /home/admin && pip install kolla/
+
+- name: Copy Kolla etc
+  shell: cd /home/admin/kolla && cp -r etc/kolla /etc/
+  args:
+   creates: /etc/kolla/globals.yml
+
+- name: Kolla Globals
+  copy:
+    src: globals.yml
+    dest: /etc/kolla/globals.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Gen passwords
+  shell: kolla-genpwd && touch /home/admin/kolla/.pwd
+  args:
+    creates: /home/admin/kolla/.pwd
+
+- name: Kolla Precheck
+  shell: kolla-ansible prechecks && touch /home/admin/kolla/.checked
+  args:
+    creates: /home/admin/kolla/.checked
+
+- name: Kolla Build Images
+  shell: kolla-build --base centos --type binary --registry 172.22.10.2:5000 --push && touch /home/admin/kolla/.built
+  args:
+    creates: /home/admin/kolla/.built
+  ignore_errors: yes
+
+- name: Kolla pull
+  shell: kolla-ansible pull && touch /home/admin/kolla/.pull
+  args:
+    creates: /home/admin/kolla/.pull
+
+- name: Kolla Deploy
+  shell: kolla-ansible deploy && touch /home/admin/kolla/.deploy
+  args:
+    creates: /home/admin/kolla/.deploy
+
+- name: Kolla Post-Deploy
+  shell: kolla-ansible post-deploy && touch /home/admin/kolla/.post
+  args:
+    creates: /home/admin/kolla/.post
+
+- name: Kolla RunOnce
+  shell: source /etc/kolla/admin-openrc.sh && cd /home/admin/kolla/tools && ./init-runonce && touch /home/admin/kolla/.ran
+  args:
+    creates: /home/admin/kolla/.ran

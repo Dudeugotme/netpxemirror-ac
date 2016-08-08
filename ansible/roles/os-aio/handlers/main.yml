@@ -1,0 +1,6 @@
+---
+- name: Restart Docker
+  shell: "systemctl daemon-reload && systemctl restart docker"
+
+- name: Enable NTP
+  shell: "systemctl enable ntpd.service && systemctl start ntpd.service"

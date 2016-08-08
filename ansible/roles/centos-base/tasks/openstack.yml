@@ -1,0 +1,18 @@
+---
+- name: Install Python Openstack Client
+  pip: name=python-openstackclient
+
+- name: Install Python Neutron Client
+  pip: name=python-neutronclient
+
+- name: Disable Firewalld
+  service: name=firewalld enabled=no
+
+- name: Disable Firewalld
+  service: name=firewalld state=stopped
+
+- name: Disable SELinux
+  selinux: policy=targeted state=permissive
+
+- name: Enabled IPv4 Forwarding
+  sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes
